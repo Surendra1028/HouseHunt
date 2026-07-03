@@ -41,6 +41,27 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/house-rent-
     Property.updateMany({}, { $set: { isApproved: true } })
       .then(() => console.log('Successfully approved all legacy property listings'))
       .catch(err => console.error('Failed to auto-approve legacy properties:', err));
+
+    // Auto-seed admin user if none exists
+    const User = require('./models/User');
+    User.findOne({ role: 'admin' })
+      .then(async (admin) => {
+        if (!admin) {
+          console.log('No administrator found. Seeding default admin account...');
+          const defaultAdmin = new User({
+            name: 'Administrator',
+            email: 'admin@gmail.com',
+            password: 'admin123',
+            role: 'admin',
+            phone: '1234567890'
+          });
+          await defaultAdmin.save();
+          console.log('Default admin account seeded successfully (admin@gmail.com / admin123)');
+        } else {
+          console.log('Administrator account already exists.');
+        }
+      })
+      .catch(err => console.error('Failed to seed admin account:', err));
   })
   .catch(err => {
     console.error('Database connection error:', err);
