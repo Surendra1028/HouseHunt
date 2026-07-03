@@ -26,6 +26,11 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'HouseHunt API is running smoothly' });
 });
 
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 // Database connection
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/house-rent-db')
   .then(() => {
@@ -36,13 +41,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/house-rent-
     Property.updateMany({}, { $set: { isApproved: true } })
       .then(() => console.log('Successfully approved all legacy property listings'))
       .catch(err => console.error('Failed to auto-approve legacy properties:', err));
-
-    // Start Server
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
   })
   .catch(err => {
     console.error('Database connection error:', err);
-    process.exit(1);
   });
