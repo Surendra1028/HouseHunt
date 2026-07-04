@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Home, FileText, Wrench, CreditCard, DollarSign, Calendar, Clock, ArrowUpRight, HelpCircle, Heart, Star, Bell, User, Edit3, MessageSquare, Search } from 'lucide-react';
+import { Home, FileText, Wrench, CreditCard, DollarSign, Calendar, Clock, ArrowUpRight, HelpCircle, Heart, Star, Bell, User, Edit3, MessageSquare, Search, Menu, X } from 'lucide-react';
 import Chat from './Chat';
 
 import { API_URL } from '../config';
 
 export default function TenantDashboard({ token, user }) {
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [lease, setLease] = useState(null);
   const [properties, setProperties] = useState([]);
   const [invoices, setInvoices] = useState([]);
@@ -527,55 +528,63 @@ export default function TenantDashboard({ token, user }) {
 
   return (
     <div className="app-container">
+      {/* Sidebar Backdrop for mobile */}
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="logo-container">
           <div className="logo-icon">
             <Home size={20} />
           </div>
           <span className="logo-text">HouseHunt</span>
+          <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>
+            <X size={20} />
+          </button>
         </div>
 
         <ul className="sidebar-menu">
           <li 
             className={`menu-item ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
           >
             <Home className="menu-icon" /> Dashboard
           </li>
           <li 
             className={`menu-item ${activeTab === 'search' ? 'active' : ''}`}
-            onClick={() => setActiveTab('search')}
+            onClick={() => { setActiveTab('search'); setSidebarOpen(false); }}
           >
             <Search className="menu-icon" /> Search Houses
           </li>
           <li 
             className={`menu-item ${activeTab === 'bookings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('bookings')}
+            onClick={() => { setActiveTab('bookings'); setSidebarOpen(false); }}
           >
             <Calendar className="menu-icon" /> Scheduled Visits
           </li>
           <li 
             className={`menu-item ${activeTab === 'favorites' ? 'active' : ''}`}
-            onClick={() => setActiveTab('favorites')}
+            onClick={() => { setActiveTab('favorites'); setSidebarOpen(false); }}
           >
             <Heart className="menu-icon" /> Favorites
           </li>
           <li 
             className={`menu-item ${activeTab === 'billing' ? 'active' : ''}`}
-            onClick={() => setActiveTab('billing')}
+            onClick={() => { setActiveTab('billing'); setSidebarOpen(false); }}
           >
             <FileText className="menu-icon" /> Invoices & Bills
           </li>
           <li 
             className={`menu-item ${activeTab === 'maintenance' ? 'active' : ''}`}
-            onClick={() => setActiveTab('maintenance')}
+            onClick={() => { setActiveTab('maintenance'); setSidebarOpen(false); }}
           >
             <Wrench className="menu-icon" /> Maintenance
           </li>
           <li 
             className={`menu-item ${activeTab === 'notifications' ? 'active' : ''}`}
-            onClick={() => setActiveTab('notifications')}
+            onClick={() => { setActiveTab('notifications'); setSidebarOpen(false); }}
           >
             <Bell className="menu-icon" /> Notifications
             {unreadNotifications > 0 && (
@@ -586,13 +595,13 @@ export default function TenantDashboard({ token, user }) {
           </li>
           <li 
             className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}
           >
             <User className="menu-icon" /> My Profile
           </li>
           <li 
             className={`menu-item ${activeTab === 'chat' ? 'active' : ''}`}
-            onClick={() => setActiveTab('chat')}
+            onClick={() => { setActiveTab('chat'); setSidebarOpen(false); }}
           >
             <MessageSquare className="menu-icon" /> Landlord Chat
           </li>
@@ -625,6 +634,9 @@ export default function TenantDashboard({ token, user }) {
       {/* Main Content */}
       <div className="main-content">
         <div className="content-header">
+          <button className="sidebar-toggle-btn" onClick={() => setSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div className="header-title">
             <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Portal</h2>
           </div>

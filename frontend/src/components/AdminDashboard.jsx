@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Users, FileText, Wrench, Plus, DollarSign, Calendar, Check, Trash2, ShieldAlert, AlertTriangle, ShieldCheck, Megaphone, MessageSquare, User } from 'lucide-react';
+import { Home, Users, FileText, Wrench, Plus, DollarSign, Calendar, Check, Trash2, ShieldAlert, AlertTriangle, ShieldCheck, Megaphone, MessageSquare, User, Menu, X } from 'lucide-react';
 import Chat from './Chat';
 
 import { API_URL } from '../config';
 
 export default function AdminDashboard({ token, user, onUserUpdate }) {
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState(null);
   const [usersList, setUsersList] = useState([]);
   const [propertiesList, setPropertiesList] = useState([]);
@@ -248,55 +249,63 @@ export default function AdminDashboard({ token, user, onUserUpdate }) {
 
   return (
     <div className="app-container">
+      {/* Sidebar Backdrop for mobile */}
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="logo-container">
           <div className="logo-icon">
             <Home size={20} />
           </div>
           <span className="logo-text">HouseHunt</span>
+          <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>
+            <X size={20} />
+          </button>
         </div>
 
         <ul className="sidebar-menu">
           <li 
             className={`menu-item ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
           >
             <Home className="menu-icon" /> Dashboard
           </li>
           <li 
             className={`menu-item ${activeTab === 'users' ? 'active' : ''}`}
-            onClick={() => setActiveTab('users')}
+            onClick={() => { setActiveTab('users'); setSidebarOpen(false); }}
           >
             <Users className="menu-icon" /> Manage Users
           </li>
           <li 
             className={`menu-item ${activeTab === 'properties' ? 'active' : ''}`}
-            onClick={() => setActiveTab('properties')}
+            onClick={() => { setActiveTab('properties'); setSidebarOpen(false); }}
           >
             <Home className="menu-icon" /> Listings Approval
           </li>
           <li 
             className={`menu-item ${activeTab === 'bookings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('bookings')}
+            onClick={() => { setActiveTab('bookings'); setSidebarOpen(false); }}
           >
             <Calendar className="menu-icon" /> Managed Bookings
           </li>
           <li 
             className={`menu-item ${activeTab === 'broadcast' ? 'active' : ''}`}
-            onClick={() => setActiveTab('broadcast')}
+            onClick={() => { setActiveTab('broadcast'); setSidebarOpen(false); }}
           >
             <Megaphone className="menu-icon" /> Announcements
           </li>
           <li 
             className={`menu-item ${activeTab === 'chat' ? 'active' : ''}`}
-            onClick={() => setActiveTab('chat')}
+            onClick={() => { setActiveTab('chat'); setSidebarOpen(false); }}
           >
             <MessageSquare className="menu-icon" /> System Chat
           </li>
           <li 
             className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}
           >
             <User className="menu-icon" /> My Profile
           </li>
@@ -329,6 +338,9 @@ export default function AdminDashboard({ token, user, onUserUpdate }) {
       {/* Main Content */}
       <div className="main-content">
         <div className="content-header">
+          <button className="sidebar-toggle-btn" onClick={() => setSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div className="header-title">
             <h2>Admin Console</h2>
           </div>

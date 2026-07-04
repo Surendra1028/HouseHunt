@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, MessageSquare, User, Phone, Mail } from 'lucide-react';
+import { Send, MessageSquare, User, Phone, Mail, ArrowLeft } from 'lucide-react';
 
 import { API_URL } from '../config';
 
@@ -125,7 +125,7 @@ export default function Chat({ token, currentUser, initialContact }) {
   };
 
   return (
-    <div className="chat-layout glass animate-fade-in">
+    <div className={`chat-layout glass animate-fade-in ${selectedContact ? 'has-selected-contact' : ''}`}>
       {/* Contacts List Panel */}
       <div className="chat-contacts-pane">
         <div className="chat-pane-header">
@@ -169,11 +169,20 @@ export default function Chat({ token, currentUser, initialContact }) {
           <>
             {/* Active Contact Header */}
             <div className="chat-screen-header">
-              <div>
-                <h4 style={{ fontWeight: 700 }}>{selectedContact.name}</h4>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>
-                  {selectedContact.role}
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <button 
+                  className="chat-back-btn" 
+                  onClick={() => setSelectedContact(null)}
+                  style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.25rem' }}
+                >
+                  <ArrowLeft size={18} />
+                </button>
+                <div>
+                  <h4 style={{ fontWeight: 700 }}>{selectedContact.name}</h4>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>
+                    {selectedContact.role}
+                  </span>
+                </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                 {selectedContact.phone && (

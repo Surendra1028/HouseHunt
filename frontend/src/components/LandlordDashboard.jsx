@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Users, FileText, Wrench, Plus, DollarSign, Calendar, Check, Play, Edit3, Trash2, ArrowUpRight, TrendingUp, MessageSquare, Bell, User, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Home, Users, FileText, Wrench, Plus, DollarSign, Calendar, Check, Play, Edit3, Trash2, ArrowUpRight, TrendingUp, MessageSquare, Bell, User, Clock, CheckCircle, XCircle, Menu, X } from 'lucide-react';
 import Chat from './Chat';
 
 import { API_URL } from '../config';
 
 export default function LandlordDashboard({ token, user }) {
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [properties, setProperties] = useState([]);
   const [leases, setLeases] = useState([]);
   const [invoices, setInvoices] = useState([]);
@@ -397,43 +398,51 @@ export default function LandlordDashboard({ token, user }) {
 
   return (
     <div className="app-container">
+      {/* Sidebar Backdrop for mobile */}
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar Navigation */}
-      <div className="sidebar">
+      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="logo-container">
           <div className="logo-icon">
             <Home size={20} />
           </div>
           <span className="logo-text">HouseHunt</span>
+          <button className="sidebar-close-btn" onClick={() => setSidebarOpen(false)}>
+            <X size={20} />
+          </button>
         </div>
 
         <ul className="sidebar-menu">
           <li 
             className={`menu-item ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
           >
             <Home className="menu-icon" /> Overview
           </li>
           <li 
             className={`menu-item ${activeTab === 'properties' ? 'active' : ''}`}
-            onClick={() => setActiveTab('properties')}
+            onClick={() => { setActiveTab('properties'); setSidebarOpen(false); }}
           >
             <Home className="menu-icon" /> Properties
           </li>
           <li 
             className={`menu-item ${activeTab === 'leases' ? 'active' : ''}`}
-            onClick={() => setActiveTab('leases')}
+            onClick={() => { setActiveTab('leases'); setSidebarOpen(false); }}
           >
             <Users className="menu-icon" /> Leases & Tenants
           </li>
           <li 
             className={`menu-item ${activeTab === 'billing' ? 'active' : ''}`}
-            onClick={() => setActiveTab('billing')}
+            onClick={() => { setActiveTab('billing'); setSidebarOpen(false); }}
           >
             <FileText className="menu-icon" /> Billings
           </li>
           <li 
             className={`menu-item ${activeTab === 'bookings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('bookings')}
+            onClick={() => { setActiveTab('bookings'); setSidebarOpen(false); }}
           >
             <Calendar className="menu-icon" /> Visit Requests
             {pendingVisits > 0 && (
@@ -444,7 +453,7 @@ export default function LandlordDashboard({ token, user }) {
           </li>
           <li 
             className={`menu-item ${activeTab === 'maintenance' ? 'active' : ''}`}
-            onClick={() => setActiveTab('maintenance')}
+            onClick={() => { setActiveTab('maintenance'); setSidebarOpen(false); }}
           >
             <Wrench className="menu-icon" /> Repairs
             {activeMaint > 0 && (
@@ -455,7 +464,7 @@ export default function LandlordDashboard({ token, user }) {
           </li>
           <li 
             className={`menu-item ${activeTab === 'notifications' ? 'active' : ''}`}
-            onClick={() => setActiveTab('notifications')}
+            onClick={() => { setActiveTab('notifications'); setSidebarOpen(false); }}
           >
             <Bell className="menu-icon" /> Notifications
             {unreadNotifications > 0 && (
@@ -466,13 +475,13 @@ export default function LandlordDashboard({ token, user }) {
           </li>
           <li 
             className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}
           >
             <User className="menu-icon" /> My Profile
           </li>
           <li 
             className={`menu-item ${activeTab === 'chat' ? 'active' : ''}`}
-            onClick={() => setActiveTab('chat')}
+            onClick={() => { setActiveTab('chat'); setSidebarOpen(false); }}
           >
             <MessageSquare className="menu-icon" /> Messages
           </li>
@@ -505,6 +514,9 @@ export default function LandlordDashboard({ token, user }) {
       {/* Main Content Pane */}
       <div className="main-content">
         <div className="content-header">
+          <button className="sidebar-toggle-btn" onClick={() => setSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div className="header-title">
             <h2>Landlord Console</h2>
           </div>

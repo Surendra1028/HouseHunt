@@ -892,3 +892,175 @@
   cursor: pointer;
   border: none;
 }
+
+/* Sidebar and toggle buttons on desktop */
+.sidebar-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  transition: var(--transition-fast);
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: auto;
+}
+
+.sidebar-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  /* Sidebar toggle buttons visibility */
+  .sidebar-toggle-btn {
+    display: inline-flex;
+  }
+
+  .sidebar-close-btn {
+    display: block;
+  }
+
+  /* Sidebar transition and positioning */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 10px 0 35px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Sidebar backdrop visible on open */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(9, 13, 22, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999;
+  }
+
+  /* Content layouts adjustment */
+  .content-header {
+    height: 70px;
+    padding: 0 1.25rem;
+  }
+
+  .content-body {
+    padding: 1.25rem;
+  }
+
+  /* Layout container overflow bug fix */
+  .app-container {
+    overflow-x: hidden;
+  }
+
+  /* Modals responsiveness */
+  .modal-content {
+    max-width: calc(100% - 2.5rem) !important;
+    padding: 1.5rem !important;
+    margin: 1.25rem !important;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  /* Chat Responsiveness */
+  .chat-layout {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 170px);
+  }
+
+  .chat-layout.has-selected-contact .chat-contacts-pane {
+    display: none;
+  }
+
+  .chat-layout:not(.has-selected-contact) .chat-screen-pane {
+    display: none;
+  }
+
+  .chat-back-btn {
+    display: block !important;
+  }
+
+  .chat-screen-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+    padding: 1rem !important;
+  }
+
+  .chat-screen-header > div:last-child {
+    flex-direction: column;
+    gap: 0.35rem !important;
+  }
+
+  .msg-wrapper {
+    max-width: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Forms and UI Cards */
+  .role-selector {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .role-option {
+    width: 100%;
+  }
+
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+}
