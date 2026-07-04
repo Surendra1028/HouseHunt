@@ -930,6 +930,10 @@
   display: none;
 }
 
+.mobile-bookings-list {
+  display: none;
+}
+
 /* Responsive Media Queries */
 @media (max-width: 768px) {
   /* Sidebar toggle buttons visibility */
@@ -1112,10 +1116,6 @@
   .custom-table {
     min-width: 800px;
   }
-}
-
-.mobile-bookings-list {
-  display: none;
 }
 
 @media (max-width: 480px) {
