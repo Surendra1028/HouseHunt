@@ -1107,6 +1107,11 @@
     color: var(--text-primary);
     margin: 0;
   }
+
+  /* Prevent standard table columns from squishing on mobile and force internal horizontal scroll */
+  .custom-table {
+    min-width: 800px;
+  }
 }
 
 .mobile-bookings-list {

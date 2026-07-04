@@ -808,59 +808,120 @@ export default function LandlordDashboard({ token, user }) {
                   {bookings.length === 0 ? (
                     <p style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center' }}>No visit requests received.</p>
                   ) : (
-                    <div className="table-container">
-                      <table className="custom-table">
-                        <thead>
-                          <tr>
-                            <th>Tenant Name</th>
-                            <th>Property Listing</th>
-                            <th>Visit Date</th>
-                            <th>Visit Time</th>
-                            <th>Inquiry Message</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {bookings.map(bk => (
-                            <tr key={bk._id}>
-                              <td style={{ fontWeight: 600 }}>
-                                {bk.tenant?.name}
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{bk.tenant?.phone}</div>
-                              </td>
-                              <td>{bk.property?.title}</td>
-                              <td>{new Date(bk.visitDate).toLocaleDateString()}</td>
-                              <td>{bk.visitTime}</td>
-                              <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '240px' }}>{bk.message}</td>
-                              <td>
-                                <span className={`badge ${
-                                  bk.status === 'approved' ? 'badge-success' :
-                                  bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
-                                }`}>
-                                  {bk.status}
-                                </span>
-                              </td>
-                              <td style={{ display: 'flex', gap: '0.5rem' }}>
+                    <>
+                      <div className="table-container bookings-table-container">
+                        <table className="custom-table">
+                          <thead>
+                            <tr>
+                              <th>Tenant Name</th>
+                              <th>Property Listing</th>
+                              <th>Visit Date</th>
+                              <th>Visit Time</th>
+                              <th>Inquiry Message</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {bookings.map(bk => (
+                              <tr key={bk._id}>
+                                <td style={{ fontWeight: 600 }}>
+                                  {bk.tenant?.name}
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{bk.tenant?.phone}</div>
+                                </td>
+                                <td>{bk.property?.title}</td>
+                                <td>{new Date(bk.visitDate).toLocaleDateString()}</td>
+                                <td>{bk.visitTime}</td>
+                                <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '240px' }}>{bk.message}</td>
+                                <td>
+                                  <span className={`badge ${
+                                    bk.status === 'approved' ? 'badge-success' :
+                                    bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
+                                  }`}>
+                                    {bk.status}
+                                  </span>
+                                </td>
+                                <td style={{ display: 'flex', gap: '0.5rem' }}>
+                                  {bk.status === 'pending' ? (
+                                    <>
+                                      <button className="btn btn-success" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'approved')}>
+                                        <CheckCircle size={12} /> Accept
+                                      </button>
+                                      <button className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'rejected')}>
+                                        <XCircle size={12} /> Reject
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => { setChatContact(bk.tenant); setActiveTab('chat'); }}>
+                                      Message Tenant
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Mobile View Card List */}
+                      <div className="mobile-bookings-list">
+                        {bookings.map(bk => (
+                          <div key={bk._id} className="booking-mobile-card glass animate-fade-in">
+                            <div className="booking-card-header">
+                              <span className={`badge ${
+                                bk.status === 'approved' ? 'badge-success' :
+                                bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
+                              }`}>
+                                {bk.status}
+                              </span>
+                              <div style={{ display: 'flex', gap: '0.5rem' }}>
                                 {bk.status === 'pending' ? (
                                   <>
-                                    <button className="btn btn-success" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'approved')}>
-                                      <CheckCircle size={12} /> Accept
+                                    <button className="btn btn-success" style={{ padding: '0.3rem 0.6rem', fontSize: '0.7rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'approved')}>
+                                      Accept
                                     </button>
-                                    <button className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'rejected')}>
-                                      <XCircle size={12} /> Reject
+                                    <button className="btn btn-danger" style={{ padding: '0.3rem 0.6rem', fontSize: '0.7rem' }} onClick={() => handleUpdateBookingStatus(bk._id, 'rejected')}>
+                                      Reject
                                     </button>
                                   </>
                                 ) : (
-                                  <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }} onClick={() => { setChatContact(bk.tenant); setActiveTab('chat'); }}>
-                                    Message Tenant
+                                  <button className="btn btn-secondary" style={{ padding: '0.3rem 0.6rem', fontSize: '0.7rem' }} onClick={() => { setChatContact(bk.tenant); setActiveTab('chat'); }}>
+                                    Message
                                   </button>
                                 )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                              </div>
+                            </div>
+                            <div className="booking-card-body">
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Tenant Name</span>
+                                <span className="booking-info-val" style={{ fontWeight: 600 }}>
+                                  {bk.tenant?.name}
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{bk.tenant?.phone}</div>
+                                </span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Property Listing</span>
+                                <span className="booking-info-val">{bk.property?.title}</span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Visit Date</span>
+                                <span className="booking-info-val">{new Date(bk.visitDate).toLocaleDateString()}</span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Visit Time</span>
+                                <span className="booking-info-val">{bk.visitTime}</span>
+                              </div>
+                              {bk.message && (
+                                <div className="booking-card-message">
+                                  <strong>Inquiry Message:</strong>
+                                  <p>{bk.message}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               )}

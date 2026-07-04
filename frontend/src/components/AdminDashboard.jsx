@@ -611,42 +611,85 @@ export default function AdminDashboard({ token, user, onUserUpdate }) {
                   {bookingsList.length === 0 ? (
                     <p style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center' }}>No booking records found.</p>
                   ) : (
-                    <div className="table-container">
-                      <table className="custom-table">
-                        <thead>
-                          <tr>
-                            <th>Tenant details</th>
-                            <th>Property Title</th>
-                            <th>Landlord</th>
-                            <th>Scheduled Date</th>
-                            <th>Scheduled Time</th>
-                            <th>Booking Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {bookingsList.map(bk => (
-                            <tr key={bk._id}>
-                              <td style={{ fontWeight: 600 }}>
-                                {bk.tenant?.name || 'Tenant'}
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>{bk.tenant?.email}</div>
-                              </td>
-                              <td>{bk.property?.title || 'Property Deleted'}</td>
-                              <td>{bk.property?.owner?.name || 'Unknown'}</td>
-                              <td>{new Date(bk.visitDate).toLocaleDateString()}</td>
-                              <td>{bk.visitTime}</td>
-                              <td>
-                                <span className={`badge ${
-                                  bk.status === 'approved' ? 'badge-success' :
-                                  bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
-                                }`}>
-                                  {bk.status}
-                                </span>
-                              </td>
+                    <>
+                      <div className="table-container bookings-table-container">
+                        <table className="custom-table">
+                          <thead>
+                            <tr>
+                              <th>Tenant details</th>
+                              <th>Property Title</th>
+                              <th>Landlord</th>
+                              <th>Scheduled Date</th>
+                              <th>Scheduled Time</th>
+                              <th>Booking Status</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody>
+                            {bookingsList.map(bk => (
+                              <tr key={bk._id}>
+                                <td style={{ fontWeight: 600 }}>
+                                  {bk.tenant?.name || 'Tenant'}
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>{bk.tenant?.email}</div>
+                                </td>
+                                <td>{bk.property?.title || 'Property Deleted'}</td>
+                                <td>{bk.property?.owner?.name || 'Unknown'}</td>
+                                <td>{new Date(bk.visitDate).toLocaleDateString()}</td>
+                                <td>{bk.visitTime}</td>
+                                <td>
+                                  <span className={`badge ${
+                                    bk.status === 'approved' ? 'badge-success' :
+                                    bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
+                                  }`}>
+                                    {bk.status}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Mobile View Card List */}
+                      <div className="mobile-bookings-list">
+                        {bookingsList.map(bk => (
+                          <div key={bk._id} className="booking-mobile-card glass animate-fade-in">
+                            <div className="booking-card-header">
+                              <span className={`badge ${
+                                bk.status === 'approved' ? 'badge-success' :
+                                bk.status === 'rejected' ? 'badge-danger' : 'badge-warning'
+                              }`}>
+                                {bk.status}
+                              </span>
+                            </div>
+                            <div className="booking-card-body">
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Tenant Details</span>
+                                <span className="booking-info-val" style={{ fontWeight: 600 }}>
+                                  {bk.tenant?.name || 'Tenant'}
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 400 }}>{bk.tenant?.email}</div>
+                                </span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Property Title</span>
+                                <span className="booking-info-val">{bk.property?.title || 'Property Deleted'}</span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Landlord</span>
+                                <span className="booking-info-val">{bk.property?.owner?.name || 'Unknown'}</span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Scheduled Date</span>
+                                <span className="booking-info-val">{new Date(bk.visitDate).toLocaleDateString()}</span>
+                              </div>
+                              <div className="booking-info-row">
+                                <span className="booking-info-label">Scheduled Time</span>
+                                <span className="booking-info-val">{bk.visitTime}</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               )}
